@@ -12,7 +12,7 @@ const utils = require("./utils.js")
 
 const botDefinition = utils.loadBotDefinition('writers_assistant_nonfiction')
 let conversation = [{ role: 'system', content: botDefinition }]
-const apiKey = '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';
+const apiKey = '[API KEY]';
 const apiUrl ='https://api.openai.com/v1/chat/completions'
 
 async function initBot() {
