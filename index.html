@@ -1,0 +1,66 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RunkGPT</title>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body> 
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h2 id="botName">Writing Assistant</h2>
+        <textarea id="user-input" class="form-control" rows="3" placeholder="Type your message here..."></textarea>
+        <button class="btn btn-primary mt-3" onclick="sendMessage()">Send</button>
+        <div id="bot-response"></div>
+      </div>
+   </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const userInput = document.getElementById('user-input').value;
+      const botResponseDiv = document.getElementById('bot-response');
+      
+      // Make a POST request to our server to interact with the bot
+      fetch('/interact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `userInput=${encodeURIComponent(userInput)}`,
+      })
+      .then(response => response.text())
+      .then(botResponse => {
+        botResponseDiv.innerHTML = `<p><strong>Bot:</strong> ${botResponse}</p>`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        botResponseDiv.innerHTML = '<p>Something went wrong...</p>';
+      });
+    }
+    window.onload = function() {
+      const botResponseDiv = document.getElementById('bot-response');
+      fetch('/init', {
+        method: 'GET'})
+      .then(response => response.text())
+      .then(botResponse => {
+        botResponseDiv.innerHTML = `<p><strong>Bot:</strong> ${botResponse}</p>`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        botResponseDiv.innerHTML = '<p>Something went wrong...</p>';
+      });
+    };
+  </script>
+</body
